@@ -21,6 +21,7 @@ test("parses invoice number and amount, ignoring the subtotal", () => {
   assert.equal(core.extractInvoiceNumber("Your invoice is attached"), "");
   assert.equal(core.extractAmount("Subtotal ₹1,000.00\nGrand Total: ₹1,180.00"), "₹1,180.00");
   assert.equal(core.extractAmount("Sub-total: ₹900\nTotal: ₹1,062"), "₹1,062");
+  assert.equal(core.extractAmount("Subtotal: $4,200.00\nTotal: $4,536.00"), "$4,536.00");
   assert.equal(core.extractAmount("nothing"), "");
 });
 
@@ -62,11 +63,11 @@ test("bad rows are flagged and never emailed; CSV neutralises formulas", () => {
 });
 
 test("reads a real .eml file: headers, body and attachment name", () => {
-  const e = parseEml(fs.readFileSync(path.join(__dirname, "..", "samples", "inbox", "01-kochi-cloud-invoice.eml"), "utf8"));
-  assert.equal(e.id, "<inv-1042@kochicloud.example>");
-  assert.match(e.from, /billing@kochicloud\.example/);
+  const e = parseEml(fs.readFileSync(path.join(__dirname, "..", "samples", "inbox", "01-northgate-cloud-invoice.eml"), "utf8"));
+  assert.equal(e.id, "<inv-1042@northgatecloud.example>");
+  assert.match(e.from, /billing@northgatecloud\.example/);
   assert.deepEqual(e.attachments, ["INV-1042.pdf"]);
-  assert.equal(core.extractAmount(e.subject + "\n" + e.body), "₹11,800.00");
+  assert.equal(core.extractAmount(e.subject + "\n" + e.body), "$4,536.00");
 });
 
 test("command-line run logs the sample inbox and drafts one reminder", () => {
@@ -74,7 +75,7 @@ test("command-line run logs the sample inbox and drafts one reminder", () => {
   const run = () => execFileSync("node", [path.join(__dirname, "..", "src", "cli.js"), "--today", "2026-11-10", "--out", out], { cwd: path.join(__dirname, ".."), encoding: "utf8" });
   const first = run();
   assert.match(first, /New invoices logged: 1/);
-  assert.match(first, /Backwater Courier: Missing, owner reminded/);
-  assert.match(fs.readFileSync(path.join(out, "reminders.txt"), "utf8"), /To: arjun@yourcompany\.example/);
+  assert.match(first, /Meridian Legal Services: Missing, owner reminded/);
+  assert.match(fs.readFileSync(path.join(out, "reminders.txt"), "utf8"), /To: daniel@yourcompany\.example/);
   assert.match(run(), /New invoices logged: 0 \(total 1\)/); // second run does not double-log
 });

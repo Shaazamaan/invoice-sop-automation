@@ -1,5 +1,5 @@
-Message-ID: <inv-1042@kochicloud.example>
-From: Kochi Cloud Billing <billing@kochicloud.example>
+Message-ID: <inv-1042@northgatecloud.example>
+From: Northgate Cloud Billing <billing@northgatecloud.example>
 To: finance@yourcompany.example
 Subject: Invoice INV-1042 for November hosting
 Date: Tue, 03 Nov 2026 10:15:00 +0530
@@ -13,12 +13,12 @@ Hello,
 
 Please find attached invoice INV-1042 for November hosting.
 
-Subtotal: ₹10,000.00
-GST 18%: ₹1,800.00
-Total: ₹11,800.00
+Subtotal: $4,200.00
+Sales tax: $336.00
+Total: $4,536.00
 
 Thank you,
-Kochi Cloud Hosting
+Northgate Cloud
 --b1
 Content-Type: application/pdf; name="INV-1042.pdf"
 Content-Disposition: attachment; filename="INV-1042.pdf"

@@ -82,7 +82,7 @@
           <form id="compose">
             <label>From<input id="c-from" value="Accounts <accounts@newvendor.example>" maxlength="80"></label>
             <label>Subject<input id="c-subject" value="Invoice NV-77 for design work" maxlength="120"></label>
-            <label>Message<textarea id="c-body" maxlength="600">Total: ₹24,500.00</textarea></label>
+            <label>Message<textarea id="c-body" maxlength="600">Total: $2,450.00</textarea></label>
             <label><input type="checkbox" id="c-file" checked> Invoice PDF attached</label>
             <button type="submit">Deliver to inbox</button>
           </form>
@@ -128,14 +128,14 @@
   var base = new Date(), Y = base.getFullYear(), M = base.getMonth(), MONTH = base.toLocaleString("en", { month: "short" });
   var state, day, delivered, timers = [], lastNew = null, n = 0;
   var EXPECTED = [
-    { vendor: "Kochi Cloud Hosting", match: "kochicloud.example", owner: "priya@yourcompany.example", dueDay: 5 },
-    { vendor: "Backwater Courier", match: "backwatercourier.example", owner: "arjun@yourcompany.example", dueDay: 5 },
-    { vendor: "Malabar Office Supplies", match: "malabaroffice.example", owner: "priya@yourcompany.example", dueDay: 25 }
+    { vendor: "Northgate Cloud", match: "northgatecloud.example", owner: "maria@yourcompany.example", dueDay: 5 },
+    { vendor: "Meridian Legal Services", match: "meridianlegal.example", owner: "daniel@yourcompany.example", dueDay: 5 },
+    { vendor: "Atlas Office Supplies", match: "atlasoffice.example", owner: "maria@yourcompany.example", dueDay: 25 }
   ];
   var SAMPLES = [
-    { key: "cloud", from: "Kochi Cloud Billing <billing@kochicloud.example>", subject: "Invoice INV-1042 for hosting", body: "Subtotal: ₹10,000.00\nGST 18%: ₹1,800.00\nTotal: ₹11,800.00", day: 3, files: ["INV-1042.pdf"] },
-    { key: "question", from: "Malabar Office Supplies <accounts@malabaroffice.example>", subject: "Question about your last invoice", body: "Could you confirm the billing address?", day: 4, files: [] },
-    { key: "courier", from: "Backwater Courier <ar@backwatercourier.example>", subject: "Invoice BC-3310", body: "Amount due: ₹3,540.00", day: 12, files: ["BC-3310.pdf"] }
+    { key: "cloud", from: "Northgate Cloud Billing <billing@northgatecloud.example>", subject: "Invoice INV-1042 for hosting", body: "Subtotal: $4,200.00\nSales tax: $336.00\nTotal: $4,536.00", day: 3, files: ["INV-1042.pdf"] },
+    { key: "question", from: "Atlas Office Supplies <accounts@atlasoffice.example>", subject: "Question about your last invoice", body: "Could you confirm the billing address?", day: 4, files: [] },
+    { key: "courier", from: "Meridian Legal Services <ar@meridianlegal.example>", subject: "Invoice ML-3310", body: "Amount due: $3,540.00", day: 12, files: ["ML-3310.pdf"] }
   ];
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
   function now() { return new Date(Y, M, day, 9); }

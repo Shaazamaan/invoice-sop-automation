@@ -30,9 +30,9 @@ This reads the sample emails in `samples/inbox`, checks them against `samples/ex
 ```
 New invoices logged: 1 (total 1)
 Skipped 02-question-no-attachment.eml: No attachment
-  Kochi Cloud Hosting: Received
-  Backwater Courier: Missing, owner reminded
-  Malabar Office Supplies: Not due yet
+  Northgate Cloud: Received
+  Meridian Legal Services: Missing, owner reminded
+  Atlas Office Supplies: Not due yet
 Reminders drafted: 1 (see out/reminders.txt)
 ```
 
