@@ -11,7 +11,7 @@
   var MONEY = "(?:₹|Rs\\.?|INR|USD|\\$|€|£)\\s?[\\d,]+(?:\\.\\d{1,2})?";
 
   function extractInvoiceNumber(text) {
-    var re = /\b(?:invoice|inv|bill)\s*(?:no\.?|number|num|#)?\s*[:#-]?\s*([A-Z0-9][A-Z0-9\/-]{2,})/gi, m;
+    var re = /\b(?:invoice|inv|bill)\b\s*(?:no\.?|number|num|#)?\s*[:#-]?\s*([A-Z0-9][A-Z0-9\/-]{2,23})(?![A-Za-z0-9\/-])/gi, m;
     while ((m = re.exec(String(text)))) { if (/\d/.test(m[1])) return m[1]; }
     return "";
   }

@@ -19,6 +19,9 @@ const D = (day) => new Date(2026, 10, day, 9);
 test("parses invoice number and amount, ignoring the subtotal", () => {
   assert.equal(core.extractInvoiceNumber("Invoice No: INV-2026/114 attached"), "INV-2026/114");
   assert.equal(core.extractInvoiceNumber("Your invoice is attached"), "");
+  // Found on a real receipt email: a link path must not be read as an invoice number.
+  assert.equal(core.extractInvoiceNumber("View it at https://pay.example.com/invoices/CAcQARoXChVhY2N0XzFVV3Y2a0VFMmtiZVY2cUMoj7HS1wYyBg7W"), "");
+  assert.equal(core.extractInvoiceNumber("Invoice #2812-8821"), "2812-8821");
   assert.equal(core.extractAmount("Subtotal ₹1,000.00\nGrand Total: ₹1,180.00"), "₹1,180.00");
   assert.equal(core.extractAmount("Sub-total: ₹900\nTotal: ₹1,062"), "₹1,062");
   assert.equal(core.extractAmount("Subtotal: $4,200.00\nTotal: $4,536.00"), "$4,536.00");
