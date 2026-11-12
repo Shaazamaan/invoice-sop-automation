@@ -51,6 +51,7 @@ Thirteen tests. They cover invoice number and amount parsing, logging each email
 - The tracker reads the email subject and body, not the PDF. The invoice number and amount are a first guess, checked at approval.
 - It expects one invoice per vendor per month.
 - The demo page and the command-line tool draft reminders; they do not send email. Sending needs a mail connection, which is what the Google script adds.
-- The Google script has been tested against a stand-in for Google's services, not yet in a live Google account.
+- The Gmail search is broad on purpose (invoice, bill or receipt in the subject), so personal receipts in the same inbox get logged too. A dedicated finance inbox avoids that.
+- The Google script was run in a live Google account on 12 Nov 2026: it logged a sample invoice email into the sheet and wrote a dry-run reminder for a missing invoice. Sending real reminder emails (`SEND_REMINDERS: true`) has not been switched on.
 - The `.eml` reader handles typical invoice emails. A production mailbox would need a full mail-parsing library.
 - All vendors, people and amounts in the samples are made up.
