@@ -1,0 +1,12 @@
+{
+  "name": "invoice-sop-automation",
+  "version": "0.1.0",
+  "description": "Invoice and reimbursement SOP with a small tracker that logs invoice emails and chases missing ones.",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node --test test/core.test.js test/apps-script.test.js"
+  }
+}

@@ -1,0 +1,28 @@
+Message-ID: <inv-1042@kochicloud.example>
+From: Kochi Cloud Billing <billing@kochicloud.example>
+To: finance@yourcompany.example
+Subject: Invoice INV-1042 for November hosting
+Date: Tue, 03 Nov 2026 10:15:00 +0530
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="b1"
+
+--b1
+Content-Type: text/plain; charset=utf-8
+
+Hello,
+
+Please find attached invoice INV-1042 for November hosting.
+
+Subtotal: ₹10,000.00
+GST 18%: ₹1,800.00
+Total: ₹11,800.00
+
+Thank you,
+Kochi Cloud Hosting
+--b1
+Content-Type: application/pdf; name="INV-1042.pdf"
+Content-Disposition: attachment; filename="INV-1042.pdf"
+Content-Transfer-Encoding: base64
+
+JVBERi0xLjQKJSBzYW1wbGUgcGxhY2Vob2xkZXIK
+--b1--

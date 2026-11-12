@@ -21,6 +21,6 @@
 4. Refunds are tracked like invoices in reverse: log the amount owed, the date promised and each chase until the money arrives.
 5. Escalate to [finance lead] when an item is unapproved after [5] working days, or a refund is overdue by [14] days.
 
-**Automation.** A Google Apps Script logs invoice emails into the tracker sheet every hour, and each morning reminds the owner about any expected invoice that has not arrived. It reads the email text only, so the invoice number and amount it records are a first guess to be checked at approval.
+**Automation.** A small tracker logs each invoice email as a row and, each morning, drafts a reminder to the owner of any expected invoice that has not arrived. It reads the email text only, so the invoice number and amount it records are a first guess to be checked at approval.
 
 **Month-end check.** All rows *Paid* or explained. Bank statement fully matched. Open refunds listed with their next chase date.

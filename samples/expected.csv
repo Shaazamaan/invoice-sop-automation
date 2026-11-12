@@ -1,0 +1,4 @@
+Vendor,Sender match (email or domain),Owner email,Due day of month,Active (yes/no)
+Kochi Cloud Hosting,kochicloud.example,priya@yourcompany.example,5,yes
+Backwater Courier,backwatercourier.example,arjun@yourcompany.example,5,yes
+Malabar Office Supplies,malabaroffice.example,priya@yourcompany.example,25,yes

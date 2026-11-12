@@ -28,7 +28,7 @@ function makeWorld(messages) {
     Date, Math, String, Number, RegExp,
   };
   vm.createContext(ctx);
-  vm.runInContext(fs.readFileSync(path.join(__dirname, "..", "Code.gs"), "utf8"), ctx);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, "..", "connectors", "google-apps-script", "Code.gs"), "utf8"), ctx);
   return { ctx, sheets, sent };
 }
 

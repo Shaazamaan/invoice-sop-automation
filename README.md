@@ -1,45 +1,56 @@
-# Invoice and reimbursement SOP, with a Gmail-to-Sheets automation
+# Invoice and reimbursement SOP, with a tracker that logs invoices and chases missing ones
 
-Two parts:
+**[Try the live demo](https://shaazamaan.github.io/invoice-sop-automation/)**: deliver a sample invoice email, watch it get logged, then run the morning check that chases a missing invoice. Nothing to install.
 
-- **[SOP.md](SOP.md)**: a one-page procedure for collecting invoices and reimbursements: intake, approval, payment, reconciliation and follow-up.
-- **[Code.gs](Code.gs)**: a Google Apps Script that logs emailed invoices into a Google Sheet and reminds owners about missing ones.
+## What is here
 
-## What the automation does
+| Part | What it is |
+| --- | --- |
+| **[SOP.md](SOP.md)** | A one-page procedure: intake, approval, payment, reconciliation, follow-up |
+| **[Live demo](https://shaazamaan.github.io/invoice-sop-automation/)** | The tracker running in the browser on sample emails |
+| **[src/core.js](src/core.js)** | The tracker logic: log invoice emails, find missing ones, draft reminders |
+| **[src/cli.js](src/cli.js)** | A command-line tool that runs the same logic over a folder of saved emails |
+| **[connectors/google-apps-script](connectors/google-apps-script/Code.gs)** | An optional script that connects the same rules to a live Gmail inbox and a Google Sheet |
 
-1. **Logs invoice emails.** Every hour it searches Gmail for emails with an attachment and "invoice", "bill" or "receipt" in the subject. Each one becomes a row in the **Invoices** sheet: date, sender, subject, a guess at the invoice number and amount, attachment names, a link back to the email, and the status *Needs approval*. An email is never logged twice.
-2. **Chases missing invoices.** The **Expected** sheet lists the invoices you expect every month: vendor, the sender's email or domain, the owner and the day of the month it is due. Each morning the script checks whether that invoice has arrived this month. If it is past the due day and nothing has arrived, the owner gets a reminder, repeated every 3 days until it arrives.
-3. **Keeps a record.** Every reminder is written to the **Reminder log** sheet.
+## What the tracker does
 
-Reminders start in **dry-run mode**: they are written to the log and no email is sent. Set `SEND_REMINDERS: true` in `Code.gs` when you want real emails to go out.
+1. **Logs invoice emails.** An email with an attachment that mentions an invoice, bill or receipt becomes one row: date, sender, a guess at the invoice number and amount, attachment names, and the status *Needs approval*. The same email is never logged twice. Emails with no attachment are skipped, with the reason shown.
+2. **Chases missing invoices.** You list the invoices you expect each month: vendor, the sender's email or domain, the owner, and the day of the month it is due. If the due day passes and nothing has arrived from that sender this month, the tracker drafts a reminder to the owner. It waits 3 days before reminding the same owner again.
 
-## Set it up (about 5 minutes)
+## Run it on your own machine
 
-1. Create a new Google Sheet.
-2. Open **Extensions > Apps Script**, delete the sample code and paste in `Code.gs`. Save.
-3. Choose the `setup` function and press **Run**. Google asks you to approve access to Gmail and Sheets for your own account.
-4. In the sheet, open the **Expected** tab and replace the example row with a vendor you expect an invoice from.
-5. Reload the sheet. An **Invoices** menu appears, so you can run either step by hand.
+Needs Node.js 18 or later. No packages to install.
 
-## 60-second demo script
+```bash
+node src/cli.js --today 2026-11-10
+```
 
-1. Send yourself an email with the subject "Invoice INV-1042 from Sample Vendor", the line "Total: ₹11,800.00" and any PDF attached.
-2. In the sheet, choose **Invoices > Log invoice emails now**. The row appears with the invoice number and amount filled in.
-3. In **Expected**, add a vendor that has sent nothing, with a due day that has already passed.
-4. Choose **Invoices > Chase missing invoices now**. The row shows "Missing" and the reminder appears in **Reminder log**.
-5. Set `SEND_REMINDERS: true`, clear the "Last reminded" cell and run it again to show the real reminder email arriving.
+This reads the sample emails in `samples/inbox`, checks them against `samples/expected.csv`, and writes three files to `out/`: `invoices.csv` (the log), `reminders.txt` (the drafted reminders) and `state.json` (so the next run does not double-log or nag). Output from the sample run:
+
+```
+New invoices logged: 1 (total 1)
+Skipped 02-question-no-attachment.eml: No attachment
+  Kochi Cloud Hosting: Received
+  Backwater Courier: Missing, owner reminded
+  Malabar Office Supplies: Not due yet
+Reminders drafted: 1 (see out/reminders.txt)
+```
+
+To use your own data, save invoice emails as `.eml` files into a folder and pass `--inbox your-folder --expected your-list.csv`.
 
 ## Tests
 
 ```bash
-node --test test/logic.test.js
+npm test
 ```
 
-Six tests run the script against a stand-in for Gmail and Sheets. They cover number and amount parsing, logging each email once, skipping emails without attachments, chasing only invoices that are missing and due, not repeating a reminder too soon, dry-run mode, and bad owner emails.
+Thirteen tests. They cover invoice number and amount parsing, logging each email once, skipping non-invoices, chasing only what is missing and due, not reminding too often, month boundaries, reading a real `.eml` file, a full command-line run, and the Google script against a stand-in for Gmail and Sheets.
 
 ## Limits
 
-- The script reads the email subject and body, not the PDF. The invoice number and amount are a first guess and are checked at approval.
-- It expects one invoice per vendor per month. Vendors who bill weekly or irregularly need a different rule.
-- It only sees the Gmail account it runs in, so invoices must reach that inbox.
-- The tests use a stand-in for Google's services. The demo recording is the proof of it running in a real account.
+- The tracker reads the email subject and body, not the PDF. The invoice number and amount are a first guess, checked at approval.
+- It expects one invoice per vendor per month.
+- The demo page and the command-line tool draft reminders; they do not send email. Sending needs a mail connection, which is what the Google script adds.
+- The Google script has been tested against a stand-in for Google's services, not yet in a live Google account.
+- The `.eml` reader handles typical invoice emails. A production mailbox would need a full mail-parsing library.
+- All vendors, people and amounts in the samples are made up.
